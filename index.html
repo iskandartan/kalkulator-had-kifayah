@@ -112,12 +112,6 @@
             margin-top: 2px;
         }
 
-        .input-flex {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         input[type="number"], select {
             width: 100%;
             padding: 10px 14px;
@@ -296,11 +290,11 @@
                     <div class="radio-group">
                         <label class="radio-label">
                             <input type="radio" name="kk_type" value="paid" checked onchange="calculate()">
-                            Rumah Berbayar (RM 1,078)
+                            Rumah Berbayar
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="kk_type" value="free" onchange="calculate()">
-                            Rumah Percuma (RM 695)
+                            Rumah Percuma
                         </label>
                     </div>
                 </div>
@@ -308,55 +302,46 @@
                 <div class="form-group">
                     <label for="dewasa_bekerja">2. Dewasa Bekerja (18 Tahun Ke Atas)</label>
                     <input type="number" id="dewasa_bekerja" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 404 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="dewasa_xbekerja">3. Dewasa Tidak Bekerja (18 Tahun Ke Atas)</label>
                     <input type="number" id="dewasa_xbekerja" value="1" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 181 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_ipt">4. Tanggungan Belajar IPT</label>
                     <input type="number" id="tanggung_ipt" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 592 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_school">5. Tanggungan Berumur 7 - 17 Tahun</label>
                     <input type="number" id="tanggung_school" value="1" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 334 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_child">6. Tanggungan 6 Tahun Ke Bawah</label>
                     <input type="number" id="tanggung_child" value="4" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 145 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_oku">7. Tanggungan Anak Kelainan Upaya (OKU)</label>
                     <input type="number" id="tanggung_oku" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 224 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_kronik">8. Tanggungan Pesakit Kronik</label>
                     <input type="number" id="tanggung_kronik" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 222 / orang</div>
                 </div>
 
                 <div class="form-group">
                     <label for="kos_penjagaan">9. Kos Penjagaan Anak</label>
                     <input type="number" id="kos_penjagaan" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar: RM 290 / tanggungan</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="hk_tambahan">10. Had Kifayah Tambahan (RM75 / Tanggungan)</label>
+                    <label for="hk_tambahan">10. Had Kifayah Tambahan</label>
                     <input type="number" id="hk_tambahan" value="0" min="0" oninput="calculate()">
-                    <div class="input-hint">Kadar Tambahan: RM 75 / unit</div>
                 </div>
             </div>
         </div>
