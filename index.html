@@ -270,7 +270,7 @@
                     <label>1. Jenis Tempat Tinggal Ketua Keluarga</label>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="kk_type" value="paid" checked onchange="calculate()">
+                            <input type="radio" name="kk_type" value="paid" onchange="calculate()">
                             Rumah Berbayar
                         </label>
                         <label class="radio-label">
@@ -396,10 +396,15 @@
 
     function calculate() {
         const income = parseFloat(document.getElementById('income').value) || 0;
-        const isKkPaid = document.querySelector('input[name="kk_type"]:checked').value === 'paid';
+        const selectedKkType = document.querySelector('input[name="kk_type"]:checked');
         
+        let kkRate = 0;
+        if (selectedKkType) {
+            kkRate = selectedKkType.value === 'paid' ? RATES.kk_paid : RATES.kk_free;
+        }
+
         const items = [
-            { qty: 1, rate: isKkPaid ? RATES.kk_paid : RATES.kk_free },
+            { qty: selectedKkType ? 1 : 0, rate: kkRate },
             { qty: parseInt(document.getElementById('dewasa_bekerja').value) || 0, rate: RATES.dewasa_bekerja },
             { qty: parseInt(document.getElementById('dewasa_xbekerja').value) || 0, rate: RATES.dewasa_xbekerja },
             { qty: parseInt(document.getElementById('tanggung_ipt').value) || 0, rate: RATES.tanggung_ipt },
@@ -461,7 +466,10 @@
 
     function resetForm() {
         document.getElementById('income').value = '';
-        document.querySelectorAll('input[name="kk_type"]')[0].checked = true;
+        const selectedKkType = document.querySelector('input[name="kk_type"]:checked');
+        if (selectedKkType) {
+            selectedKkType.checked = false;
+        }
         document.getElementById('dewasa_bekerja').value = '';
         document.getElementById('dewasa_xbekerja').value = '';
         document.getElementById('tanggung_ipt').value = '';
