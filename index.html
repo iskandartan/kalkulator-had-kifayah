@@ -255,7 +255,7 @@
                 </div>
                 <div class="form-group">
                     <label for="income">Jumlah Pendapatan Kasar Bulanan (RM)</label>
-                    <input type="number" id="income" value="2000" min="0" step="10" oninput="calculate()">
+                    <input type="number" id="income" value="" placeholder="0" min="0" step="10" oninput="calculate()">
                     <div class="input-hint">Termasuk gaji, elaun, pencen, dan pendapatan sampingan isi rumah.</div>
                 </div>
             </div>
@@ -282,47 +282,47 @@
 
                 <div class="form-group">
                     <label for="dewasa_bekerja">2. Dewasa Bekerja (18 Tahun Ke Atas)</label>
-                    <input type="number" id="dewasa_bekerja" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="dewasa_bekerja" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="dewasa_xbekerja">3. Dewasa Tidak Bekerja (18 Tahun Ke Atas)</label>
-                    <input type="number" id="dewasa_xbekerja" value="1" min="0" oninput="calculate()">
+                    <input type="number" id="dewasa_xbekerja" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_ipt">4. Tanggungan Belajar IPT</label>
-                    <input type="number" id="tanggung_ipt" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="tanggung_ipt" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_school">5. Tanggungan Berumur 7 - 17 Tahun</label>
-                    <input type="number" id="tanggung_school" value="1" min="0" oninput="calculate()">
+                    <input type="number" id="tanggung_school" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_child">6. Tanggungan 6 Tahun Ke Bawah</label>
-                    <input type="number" id="tanggung_child" value="4" min="0" oninput="calculate()">
+                    <input type="number" id="tanggung_child" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_oku">7. Tanggungan Anak Kelainan Upaya (OKU)</label>
-                    <input type="number" id="tanggung_oku" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="tanggung_oku" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="tanggung_kronik">8. Tanggungan Pesakit Kronik</label>
-                    <input type="number" id="tanggung_kronik" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="tanggung_kronik" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="kos_penjagaan">9. Kos Penjagaan Anak</label>
-                    <input type="number" id="kos_penjagaan" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="kos_penjagaan" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
 
                 <div class="form-group">
                     <label for="hk_tambahan">10. Had Kifayah Tambahan</label>
-                    <input type="number" id="hk_tambahan" value="0" min="0" oninput="calculate()">
+                    <input type="number" id="hk_tambahan" value="" placeholder="0" min="0" oninput="calculate()">
                 </div>
             </div>
         </div>
@@ -336,22 +336,22 @@
 
                 <div class="result-highlight">
                     <div style="font-size: 13px; color: var(--text-muted); font-weight:600;">JUMLAH HAD KIFAYAH (B)</div>
-                    <div class="val" id="res_total_hk">RM 2,173.00</div>
+                    <div class="val" id="res_total_hk">RM 0.00</div>
                 </div>
 
                 <div class="stat-row">
                     <span>Pendapatan Isi Rumah (A)</span>
-                    <span class="stat-value" id="res_income">RM 2,000.00</span>
+                    <span class="stat-value" id="res_income">RM 0.00</span>
                 </div>
 
                 <div class="stat-row">
                     <span>Baki / Jurang Pendapatan (A - B)</span>
-                    <span class="stat-value" id="res_balance" style="color: var(--danger);">-RM 173.00</span>
+                    <span class="stat-value" id="res_balance">RM 0.00</span>
                 </div>
 
                 <div class="stat-row">
                     <span>Nisbah Pendapatan / HK</span>
-                    <span class="stat-value" id="res_ratio">92.04%</span>
+                    <span class="stat-value" id="res_ratio">0.00%</span>
                 </div>
 
                 <div class="stat-row">
@@ -361,7 +361,7 @@
 
                 <div class="stat-row">
                     <span>Kategori Asnaf</span>
-                    <div><span id="res_asnaf_badge" class="badge-status badge-miskin">MISKIN</span></div>
+                    <div><span id="res_asnaf_badge" class="badge-status badge-fakir">FAKIR</span></div>
                 </div>
 
                 <button class="btn-action" onclick="window.print()">Cetak / Simpan PDF</button>
@@ -425,7 +425,13 @@
         
         const resBalanceElem = document.getElementById('res_balance');
         resBalanceElem.textContent = formatCurrency(balance);
-        resBalanceElem.style.color = balance < 0 ? 'var(--danger)' : 'var(--success)';
+        if (balance < 0) {
+            resBalanceElem.style.color = 'var(--danger)';
+        } else if (balance > 0) {
+            resBalanceElem.style.color = 'var(--success)';
+        } else {
+            resBalanceElem.style.color = 'var(--text-main)';
+        }
 
         document.getElementById('res_ratio').textContent = ratio.toFixed(2) + '%';
 
@@ -454,17 +460,17 @@
     }
 
     function resetForm() {
-        document.getElementById('income').value = 2000;
+        document.getElementById('income').value = '';
         document.querySelectorAll('input[name="kk_type"]')[0].checked = true;
-        document.getElementById('dewasa_bekerja').value = 0;
-        document.getElementById('dewasa_xbekerja').value = 1;
-        document.getElementById('tanggung_ipt').value = 0;
-        document.getElementById('tanggung_school').value = 1;
-        document.getElementById('tanggung_child').value = 4;
-        document.getElementById('tanggung_oku').value = 0;
-        document.getElementById('tanggung_kronik').value = 0;
-        document.getElementById('kos_penjagaan').value = 0;
-        document.getElementById('hk_tambahan').value = 0;
+        document.getElementById('dewasa_bekerja').value = '';
+        document.getElementById('dewasa_xbekerja').value = '';
+        document.getElementById('tanggung_ipt').value = '';
+        document.getElementById('tanggung_school').value = '';
+        document.getElementById('tanggung_child').value = '';
+        document.getElementById('tanggung_oku').value = '';
+        document.getElementById('tanggung_kronik').value = '';
+        document.getElementById('kos_penjagaan').value = '';
+        document.getElementById('hk_tambahan').value = '';
         calculate();
     }
 
