@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Had Kifayah & Kelayakan Asnaf</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --bg-slate: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-slate);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 850px) {
+            .grid-layout {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .input-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 6px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .results-box {
+            position: sticky;
+            top: 20px;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .badge-layak { background-color: #dcfce7; color: var(--success); }
+        .badge-tidak { background-color: #fee2e2; color: var(--danger); }
+        .badge-fakir { background-color: #ffedd5; color: #c2410c; }
+        .badge-miskin { background-color: #e0f2fe; color: #0369a1; }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 14px;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .result-highlight {
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-highlight .val {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-slate);
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .btn-action, footer { display: none; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Kalkulator Had Kifayah & Kelayakan Asnaf</h1>
+        <p>Sistem Semakan & Pengiraan Nisbah Had Kifayah Isi Rumah</p>
+    </header>
+
+    <div class="grid-layout">
+        <!-- BAHAGIAN INPUT DATA -->
+        <div>
+            <!-- (A) PENDAPATAN ISI RUMAH -->
+            <div class="card">
+                <div class="card-title">
+                    <span>(A) Pendapatan Kasar Isi Rumah</span>
+                </div>
+                <div class="form-group">
+                    <label for="income">Jumlah Pendapatan Kasar Bulanan (RM)</label>
+                    <input type="number" id="income" value="2000" min="0" step="10" oninput="calculate()">
+                    <div class="input-hint">Termasuk gaji, elaun, pencen, dan pendapatan sampingan isi rumah.</div>
+                </div>
+            </div>
+
+            <!-- KATEGORI ISI RUMAH -->
+            <div class="card">
+                <div class="card-title">
+                    <span>(B) Bilangan Ahli Isi Rumah & Tanggungan</span>
+                </div>
+
+                <div class="form-group">
+                    <label>1. Jenis Tempat Tinggal Ketua Keluarga</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="kk_type" value="paid" checked onchange="calculate()">
+                            Rumah Berbayar (RM 1,078)
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="kk_type" value="free" onchange="calculate()">
+                            Rumah Percuma (RM 695)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dewasa_bekerja">2. Dewasa Bekerja (18 Tahun Ke Atas)</label>
+                    <input type="number" id="dewasa_bekerja" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 404 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dewasa_xbekerja">3. Dewasa Tidak Bekerja (18 Tahun Ke Atas)</label>
+                    <input type="number" id="dewasa_xbekerja" value="1" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 181 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggung_ipt">4. Tanggungan Belajar IPT</label>
+                    <input type="number" id="tanggung_ipt" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 592 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggung_school">5. Tanggungan Berumur 7 - 17 Tahun</label>
+                    <input type="number" id="tanggung_school" value="1" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 334 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggung_child">6. Tanggungan 6 Tahun Ke Bawah</label>
+                    <input type="number" id="tanggung_child" value="4" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 145 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggung_oku">7. Tanggungan Anak Kelainan Upaya (OKU)</label>
+                    <input type="number" id="tanggung_oku" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 224 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggung_kronik">8. Tanggungan Pesakit Kronik</label>
+                    <input type="number" id="tanggung_kronik" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 222 / orang</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="kos_penjagaan">9. Kos Penjagaan Anak</label>
+                    <input type="number" id="kos_penjagaan" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar: RM 290 / tanggungan</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hk_tambahan">10. Had Kifayah Tambahan (RM75 / Tanggungan)</label>
+                    <input type="number" id="hk_tambahan" value="0" min="0" oninput="calculate()">
+                    <div class="input-hint">Kadar Tambahan: RM 75 / unit</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BAHAGIAN KEPUTUSAN -->
+        <div class="results-box">
+            <div class="card">
+                <div class="card-title">
+                    <span>Ringkasan Keputusan</span>
+                </div>
+
+                <div class="result-highlight">
+                    <div style="font-size: 13px; color: var(--text-muted); font-weight:600;">JUMLAH HAD KIFAYAH (B)</div>
+                    <div class="val" id="res_total_hk">RM 2,173.00</div>
+                </div>
+
+                <div class="stat-row">
+                    <span>Pendapatan Isi Rumah (A)</span>
+                    <span class="stat-value" id="res_income">RM 2,000.00</span>
+                </div>
+
+                <div class="stat-row">
+                    <span>Baki / Jurang Pendapatan (A - B)</span>
+                    <span class="stat-value" id="res_balance" style="color: var(--danger);">-RM 173.00</span>
+                </div>
+
+                <div class="stat-row">
+                    <span>Nisbah Pendapatan / HK</span>
+                    <span class="stat-value" id="res_ratio">92.04%</span>
+                </div>
+
+                <div class="stat-row">
+                    <span>Status Kelayakan</span>
+                    <div><span id="res_status_badge" class="badge-status badge-layak">LAYAK</span></div>
+                </div>
+
+                <div class="stat-row">
+                    <span>Kategori Asnaf</span>
+                    <div><span id="res_asnaf_badge" class="badge-status badge-miskin">MISKIN</span></div>
+                </div>
+
+                <button class="btn-action" onclick="window.print()">Cetak / Simpan PDF</button>
+                <button class="btn-action btn-secondary" onclick="resetForm()">Set Semula (Reset)</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title" style="font-size: 15px;">
+                    <span>Perincian Pengiraan Had Kifayah</span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Bil</th>
+                            <th>Jumlah (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="breakdown_table">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANDUAN SKALA -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-title">
+            <span>Skala Kelayakan & Kategori Asnaf</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; font-size: 13px;">
+            <div style="background: var(--bg-slate); padding: 12px; border-radius: 8px;">
+                <strong>Skala Kelayakan Asnaf:</strong>
+                <ul style="margin-left: 18px; margin-top: 5px;">
+                    <li><strong>0% - 100%</strong>: LAYAK menerima bantuan</li>
+                    <li><strong>101% ke atas</strong>: TIDAK LAYAK (Pendapatan melebihi HK)</li>
+                </ul>
+            </div>
+            <div style="background: var(--bg-slate); padding: 12px; border-radius: 8px;">
+                <strong>Skala Kategori Asnaf:</strong>
+                <ul style="margin-left: 18px; margin-top: 5px;">
+                    <li><strong>0% - 49.99%</strong>: FAKIR (Pendapatan kurang 50% daripada HK)</li>
+                    <li><strong>50% - 100%</strong>: MISKIN (Pendapatan 50% - 100% daripada HK)</li>
+                    <li><strong>101% ke atas</strong>: BUKAN ASNAF FAKIR / MISKIN</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Aplikasi Kalkulator Pengiraan Had Kifayah Interaktif &copy; 2026. Diubahsuai untuk kemudahan semakan secara web.</p>
+    </footer>
+</div>
+
+<script>
+    const RATES = {
+        kk_paid: 1078,
+        kk_free: 695,
+        dewasa_bekerja: 404,
+        dewasa_xbekerja: 181,
+        tanggung_ipt: 592,
+        tanggung_school: 334,
+        tanggung_child: 145,
+        tanggung_oku: 224,
+        tanggung_kronik: 222,
+        kos_penjagaan: 290,
+        hk_tambahan: 75
+    };
+
+    function formatCurrency(amount) {
+        return 'RM ' + amount.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculate() {
+        const income = parseFloat(document.getElementById('income').value) || 0;
+        const isKkPaid = document.querySelector('input[name="kk_type"]:checked').value === 'paid';
+        
+        const items = [
+            { key: isKkPaid ? 'kk_paid' : 'kk_free', label: isKkPaid ? 'Ketua Keluarga (Berbayar)' : 'Ketua Keluarga (Percuma)', qty: 1, rate: isKkPaid ? RATES.kk_paid : RATES.kk_free },
+            { key: 'dewasa_bekerja', label: 'Dewasa Bekerja', qty: parseInt(document.getElementById('dewasa_bekerja').value) || 0, rate: RATES.dewasa_bekerja },
+            { key: 'dewasa_xbekerja', label: 'Dewasa Tidak Bekerja', qty: parseInt(document.getElementById('dewasa_xbekerja').value) || 0, rate: RATES.dewasa_xbekerja },
+            { key: 'tanggung_ipt', label: 'Tanggungan IPT', qty: parseInt(document.getElementById('tanggung_ipt').value) || 0, rate: RATES.tanggung_ipt },
+            { key: 'tanggung_school', label: 'Tanggungan 7 - 17 Tahun', qty: parseInt(document.getElementById('tanggung_school').value) || 0, rate: RATES.tanggung_school },
+            { key: 'tanggung_child', label: 'Tanggungan 6 Tahun Ke Bawah', qty: parseInt(document.getElementById('tanggung_child').value) || 0, rate: RATES.tanggung_child },
+            { key: 'tanggung_oku', label: 'Tanggungan OKU', qty: parseInt(document.getElementById('tanggung_oku').value) || 0, rate: RATES.tanggung_oku },
+            { key: 'tanggung_kronik', label: 'Pesakit Kronik', qty: parseInt(document.getElementById('tanggung_kronik').value) || 0, rate: RATES.tanggung_kronik },
+            { key: 'kos_penjagaan', label: 'Kos Penjagaan Anak', qty: parseInt(document.getElementById('kos_penjagaan').value) || 0, rate: RATES.kos_penjagaan },
+            { key: 'hk_tambahan', label: 'Had Kifayah Tambahan', qty: parseInt(document.getElementById('hk_tambahan').value) || 0, rate: RATES.hk_tambahan }
+        ];
+
+        let totalHK = 0;
+        let tableRowsHtml = '';
+
+        items.forEach(item => {
+            const subtotal = item.qty * item.rate;
+            totalHK += subtotal;
+
+            if (item.qty > 0) {
+                tableRowsHtml += `
+                    <tr>
+                        <td>${item.label}</td>
+                        <td>${item.qty}</td>
+                        <td>${formatCurrency(subtotal)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        const balance = income - totalHK;
+        const ratio = totalHK > 0 ? (income / totalHK) * 100 : 0;
+
+        // UI Updates
+        document.getElementById('res_income').textContent = formatCurrency(income);
+        document.getElementById('res_total_hk').textContent = formatCurrency(totalHK);
+        
+        const resBalanceElem = document.getElementById('res_balance');
+        resBalanceElem.textContent = formatCurrency(balance);
+        resBalanceElem.style.color = balance < 0 ? 'var(--danger)' : 'var(--success)';
+
+        document.getElementById('res_ratio').textContent = ratio.toFixed(2) + '%';
+
+        // Status Kelayakan & Asnaf
+        const statusBadge = document.getElementById('res_status_badge');
+        const asnafBadge = document.getElementById('res_asnaf_badge');
+
+        if (ratio <= 100) {
+            statusBadge.textContent = 'LAYAK';
+            statusBadge.className = 'badge-status badge-layak';
+
+            if (ratio < 50) {
+                asnafBadge.textContent = 'FAKIR';
+                asnafBadge.className = 'badge-status badge-fakir';
+            } else {
+                asnafBadge.textContent = 'MISKIN';
+                asnafBadge.className = 'badge-status badge-miskin';
+            }
+        } else {
+            statusBadge.textContent = 'TIDAK LAYAK';
+            statusBadge.className = 'badge-status badge-tidak';
+
+            asnafBadge.textContent = 'BUKAN ASNAF';
+            asnafBadge.className = 'badge-status badge-tidak';
+        }
+
+        document.getElementById('breakdown_table').innerHTML = tableRowsHtml;
+    }
+
+    function resetForm() {
+        document.getElementById('income').value = 2000;
+        document.querySelectorAll('input[name="kk_type"]')[0].checked = true;
+        document.getElementById('dewasa_bekerja').value = 0;
+        document.getElementById('dewasa_xbekerja').value = 1;
+        document.getElementById('tanggung_ipt').value = 0;
+        document.getElementById('tanggung_school').value = 1;
+        document.getElementById('tanggung_child').value = 4;
+        document.getElementById('tanggung_oku').value = 0;
+        document.getElementById('tanggung_kronik').value = 0;
+        document.getElementById('kos_penjagaan').value = 0;
+        document.getElementById('hk_tambahan').value = 0;
+        calculate();
+    }
+
+    // Run initial calculation
+    calculate();
+</script>
+
+</body>
+</html>
