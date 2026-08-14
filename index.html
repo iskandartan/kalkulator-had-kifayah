@@ -36,7 +36,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -193,25 +193,6 @@
             font-size: 28px;
             font-weight: 800;
             color: var(--primary-dark);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 8px 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--bg-slate);
-            font-weight: 600;
-            color: var(--text-muted);
         }
 
         .btn-action {
@@ -386,48 +367,6 @@
                 <button class="btn-action" onclick="window.print()">Cetak / Simpan PDF</button>
                 <button class="btn-action btn-secondary" onclick="resetForm()">Set Semula (Reset)</button>
             </div>
-
-            <div class="card">
-                <div class="card-title" style="font-size: 15px;">
-                    <span>Perincian Pengiraan Had Kifayah</span>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Kategori</th>
-                            <th>Bil</th>
-                            <th>Jumlah (RM)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="breakdown_table">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- PANDUAN SKALA -->
-    <div class="card" style="margin-top: 20px;">
-        <div class="card-title">
-            <span>Skala Kelayakan & Kategori Asnaf</span>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; font-size: 13px;">
-            <div style="background: var(--bg-slate); padding: 12px; border-radius: 8px;">
-                <strong>Skala Kelayakan Asnaf:</strong>
-                <ul style="margin-left: 18px; margin-top: 5px;">
-                    <li><strong>0% - 100%</strong>: LAYAK menerima bantuan</li>
-                    <li><strong>101% ke atas</strong>: TIDAK LAYAK (Pendapatan melebihi HK)</li>
-                </ul>
-            </div>
-            <div style="background: var(--bg-slate); padding: 12px; border-radius: 8px;">
-                <strong>Skala Kategori Asnaf:</strong>
-                <ul style="margin-left: 18px; margin-top: 5px;">
-                    <li><strong>0% - 49.99%</strong>: FAKIR (Pendapatan kurang 50% daripada HK)</li>
-                    <li><strong>50% - 100%</strong>: MISKIN (Pendapatan 50% - 100% daripada HK)</li>
-                    <li><strong>101% ke atas</strong>: BUKAN ASNAF FAKIR / MISKIN</li>
-                </ul>
-            </div>
         </div>
     </div>
 
@@ -460,34 +399,21 @@
         const isKkPaid = document.querySelector('input[name="kk_type"]:checked').value === 'paid';
         
         const items = [
-            { key: isKkPaid ? 'kk_paid' : 'kk_free', label: isKkPaid ? 'Ketua Keluarga (Berbayar)' : 'Ketua Keluarga (Percuma)', qty: 1, rate: isKkPaid ? RATES.kk_paid : RATES.kk_free },
-            { key: 'dewasa_bekerja', label: 'Dewasa Bekerja', qty: parseInt(document.getElementById('dewasa_bekerja').value) || 0, rate: RATES.dewasa_bekerja },
-            { key: 'dewasa_xbekerja', label: 'Dewasa Tidak Bekerja', qty: parseInt(document.getElementById('dewasa_xbekerja').value) || 0, rate: RATES.dewasa_xbekerja },
-            { key: 'tanggung_ipt', label: 'Tanggungan IPT', qty: parseInt(document.getElementById('tanggung_ipt').value) || 0, rate: RATES.tanggung_ipt },
-            { key: 'tanggung_school', label: 'Tanggungan 7 - 17 Tahun', qty: parseInt(document.getElementById('tanggung_school').value) || 0, rate: RATES.tanggung_school },
-            { key: 'tanggung_child', label: 'Tanggungan 6 Tahun Ke Bawah', qty: parseInt(document.getElementById('tanggung_child').value) || 0, rate: RATES.tanggung_child },
-            { key: 'tanggung_oku', label: 'Tanggungan OKU', qty: parseInt(document.getElementById('tanggung_oku').value) || 0, rate: RATES.tanggung_oku },
-            { key: 'tanggung_kronik', label: 'Pesakit Kronik', qty: parseInt(document.getElementById('tanggung_kronik').value) || 0, rate: RATES.tanggung_kronik },
-            { key: 'kos_penjagaan', label: 'Kos Penjagaan Anak', qty: parseInt(document.getElementById('kos_penjagaan').value) || 0, rate: RATES.kos_penjagaan },
-            { key: 'hk_tambahan', label: 'Had Kifayah Tambahan', qty: parseInt(document.getElementById('hk_tambahan').value) || 0, rate: RATES.hk_tambahan }
+            { qty: 1, rate: isKkPaid ? RATES.kk_paid : RATES.kk_free },
+            { qty: parseInt(document.getElementById('dewasa_bekerja').value) || 0, rate: RATES.dewasa_bekerja },
+            { qty: parseInt(document.getElementById('dewasa_xbekerja').value) || 0, rate: RATES.dewasa_xbekerja },
+            { qty: parseInt(document.getElementById('tanggung_ipt').value) || 0, rate: RATES.tanggung_ipt },
+            { qty: parseInt(document.getElementById('tanggung_school').value) || 0, rate: RATES.tanggung_school },
+            { qty: parseInt(document.getElementById('tanggung_child').value) || 0, rate: RATES.tanggung_child },
+            { qty: parseInt(document.getElementById('tanggung_oku').value) || 0, rate: RATES.tanggung_oku },
+            { qty: parseInt(document.getElementById('tanggung_kronik').value) || 0, rate: RATES.tanggung_kronik },
+            { qty: parseInt(document.getElementById('kos_penjagaan').value) || 0, rate: RATES.kos_penjagaan },
+            { qty: parseInt(document.getElementById('hk_tambahan').value) || 0, rate: RATES.hk_tambahan }
         ];
 
         let totalHK = 0;
-        let tableRowsHtml = '';
-
         items.forEach(item => {
-            const subtotal = item.qty * item.rate;
-            totalHK += subtotal;
-
-            if (item.qty > 0) {
-                tableRowsHtml += `
-                    <tr>
-                        <td>${item.label}</td>
-                        <td>${item.qty}</td>
-                        <td>${formatCurrency(subtotal)}</td>
-                    </tr>
-                `;
-            }
+            totalHK += item.qty * item.rate;
         });
 
         const balance = income - totalHK;
@@ -525,8 +451,6 @@
             asnafBadge.textContent = 'BUKAN ASNAF';
             asnafBadge.className = 'badge-status badge-tidak';
         }
-
-        document.getElementById('breakdown_table').innerHTML = tableRowsHtml;
     }
 
     function resetForm() {
