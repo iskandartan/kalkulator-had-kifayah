@@ -163,6 +163,12 @@
         .badge-fakir { background-color: #ffedd5; color: #c2410c; }
         .badge-miskin { background-color: #e0f2fe; color: #0369a1; }
 
+        .empty-text {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
         .stat-row {
             display: flex;
             justify-content: space-between;
@@ -356,12 +362,12 @@
 
                 <div class="stat-row">
                     <span>Status Kelayakan</span>
-                    <div><span id="res_status_badge" class="badge-status badge-layak">LAYAK</span></div>
+                    <div id="res_status_box"><span class="empty-text">-</span></div>
                 </div>
 
                 <div class="stat-row">
                     <span>Kategori Asnaf</span>
-                    <div><span id="res_asnaf_badge" class="badge-status badge-fakir">FAKIR</span></div>
+                    <div id="res_asnaf_box"><span class="empty-text">-</span></div>
                 </div>
 
                 <button class="btn-action" onclick="window.print()">Cetak / Simpan PDF</button>
@@ -440,27 +446,26 @@
 
         document.getElementById('res_ratio').textContent = ratio.toFixed(2) + '%';
 
-        // Status Kelayakan & Asnaf
-        const statusBadge = document.getElementById('res_status_badge');
-        const asnafBadge = document.getElementById('res_asnaf_badge');
+        // Status Kelayakan & Asnaf (Default Blank jika tiada input Had Kifayah)
+        const statusBox = document.getElementById('res_status_box');
+        const asnafBox = document.getElementById('res_asnaf_box');
 
-        if (ratio <= 100) {
-            statusBadge.textContent = 'LAYAK';
-            statusBadge.className = 'badge-status badge-layak';
-
-            if (ratio < 50) {
-                asnafBadge.textContent = 'FAKIR';
-                asnafBadge.className = 'badge-status badge-fakir';
-            } else {
-                asnafBadge.textContent = 'MISKIN';
-                asnafBadge.className = 'badge-status badge-miskin';
-            }
+        if (totalHK === 0) {
+            statusBox.innerHTML = '<span class="empty-text">-</span>';
+            asnafBox.innerHTML = '<span class="empty-text">-</span>';
         } else {
-            statusBadge.textContent = 'TIDAK LAYAK';
-            statusBadge.className = 'badge-status badge-tidak';
+            if (ratio <= 100) {
+                statusBox.innerHTML = '<span class="badge-status badge-layak">LAYAK</span>';
 
-            asnafBadge.textContent = 'BUKAN ASNAF';
-            asnafBadge.className = 'badge-status badge-tidak';
+                if (ratio < 50) {
+                    asnafBox.innerHTML = '<span class="badge-status badge-fakir">FAKIR</span>';
+                } else {
+                    asnafBox.innerHTML = '<span class="badge-status badge-miskin">MISKIN</span>';
+                }
+            } else {
+                statusBox.innerHTML = '<span class="badge-status badge-tidak">TIDAK LAYAK</span>';
+                asnafBox.innerHTML = '<span class="badge-status badge-tidak">BUKAN ASNAF</span>';
+            }
         }
     }
 
